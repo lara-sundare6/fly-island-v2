@@ -1,0 +1,6 @@
+runtime: python38
+
+entrypoint: gunicorn -b :$PORT app.main:app
+
+env_variables:
+  GOOGLE_APPLICATION_CREDENTIALS: "/Users/mercurie/GitHub/fly-island/fly-island-61a895b2726a.json"
