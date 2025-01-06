@@ -2,21 +2,7 @@
 
 ## Deployment Instructions
 
-### Google Cloud
-
-1. Install the Google Cloud SDK:
-    ```sh
-    curl https://sdk.cloud.google.com | bash
-    exec -l $SHELL
-    gcloud init
-    ```
-
-2. Deploy the app:
-    ```sh
-    gcloud app deploy
-    ```
-
-### Docker
+### Docker & Google Cloud
 
 1. Install Docker from [Docker's official website](https://docs.docker.com/get-docker/).
 
