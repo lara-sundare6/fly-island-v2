@@ -1,7 +1,5 @@
 # fly-island
 
-# fly-island
-
 ## Deployment Instructions
 
 ### Google Cloud
