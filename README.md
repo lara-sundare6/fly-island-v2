@@ -18,10 +18,10 @@
 
 4. Deploy to Google Cloud Run
     ```
-    gcloud run deploy your-app \
+    gcloud run deploy my-app \
         --image gcr.io/fly-island/my-app \
         --platform managed \
-        --region your-region \
+        --region us-central1 \
         --allow-unauthenticated
     ```
     
