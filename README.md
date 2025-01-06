@@ -8,18 +8,18 @@
 
 2. Build the Docker image:
     ```sh
-    docker build -t gcr.io/your-project-id/your-app .
+    docker build -t gcr.io/fly-island/my-app .
     ```
 
 3. Push the Docker container:
     ```sh
-    docker push gcr.io/your-project-id/your-app
+    docker push gcr.io/fly-island/my-app
     ```
 
 4. Deploy to Google Cloud Run
     ```
     gcloud run deploy your-app \
-        --image gcr.io/your-project-id/your-app \
+        --image gcr.io/fly-island/my-app \
         --platform managed \
         --region your-region \
         --allow-unauthenticated
