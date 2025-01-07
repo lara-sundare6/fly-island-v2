@@ -59,5 +59,3 @@ Fly Island is a web application that integrates with Google Cloud Monitoring to 
 
     ```sh
     flask run
-
-Feel free to customize these instructions as per your project's requirements. You can update the README.md file directly in the repository with these instructions.
