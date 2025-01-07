@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from flask_socketio import SocketIO
 from app.routes.ci_cd import ci_cd_blueprint
@@ -6,8 +6,9 @@ from app.routes.ai import ai_blueprint
 from google.cloud import monitoring_v3
 from google.protobuf.timestamp_pb2 import Timestamp
 import time
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../frontend/public', template_folder='../frontend/public')
 CORS(app)
 socketio = SocketIO(app)
 
@@ -20,47 +21,46 @@ project_id = "fly-island"
 client = monitoring_v3.MetricServiceClient()
 project_name = f"projects/{project_id}"
 
-# app/main.py
 def create_custom_metric(value):
     client = monitoring_v3.MetricServiceClient()
-    project_name = f"projects/{project_id}"
-
-    series = monitoring_v3.TimeSeries()
-    series.metric.type = "custom.googleapis.com/my_metric"
-    series.resource.type = "global"
-
-    point = series.points.add()
+    project_name = f"projects/{client.project_path('fly-island')}"
+    
+    series = monitoring_v3.types.TimeSeries()
+    series.metric.type = 'custom.googleapis.com/my_metric'
+    series.resource.type = 'global'
+    series.resource.labels['project_id'] = 'fly-island'
+    
+    point = monitoring_v3.types.Point()
     point.value.double_value = value
-    now = Timestamp()
-    now.GetCurrentTime()
-    point.interval.end_time.seconds = int(now.seconds)
-    point.interval.end_time.nanos = int(now.nanos)
-
+    now = time.time()
+    seconds = int(now)
+    nanos = int((now - seconds) * 10**9)
+    
+    point.interval = monitoring_v3.types.TimeInterval()
+    point.interval.end_time = Timestamp(seconds=seconds, nanos=nanos)
+    
+    series.points.append(point)
+    
     client.create_time_series(name=project_name, time_series=[series])
-
 
 @app.route('/')
 def index():
     create_custom_metric(1.0)  # Example metric value
-    return app.send_static_file('index.html')
+    return send_from_directory(app.static_folder, 'index.html')
 
 @app.route('/ci_cd_status', methods=['GET'])
 def get_ci_cd_status():
-    # Fetch and return CI/CD status data
     data = [
         {"timestamp": "2024-12-10T22:47:00Z", "status": 1},
         {"timestamp": "2024-12-10T22:48:00Z", "status": 0},
-        # Add more data points as needed
     ]
     return jsonify(data)
 
 @app.route('/update_pipeline_status', methods=['POST'])
 def update_pipeline_status():
-    # Fetch the latest pipeline status and emit it to all connected clients
     data = [
         {"timestamp": "2024-12-10T22:47:00Z", "status": 1},
         {"timestamp": "2024-12-10T22:48:00Z", "status": 0},
-        # Add more data points as needed
     ]
     socketio.emit('pipeline_status_update', data)
     return jsonify({'status': 'success'})
@@ -77,11 +77,9 @@ def handle_disconnect():
 
 @socketio.on('request_pipeline_status')
 def handle_request_pipeline_status():
-    # Emit the current pipeline status to the client
     data = [
         {"timestamp": "2024-12-10T22:47:00Z", "status": 1},
         {"timestamp": "2024-12-10T22:48:00Z", "status": 0},
-        # Add more data points as needed
     ]
     emit('pipeline_status_update', data)
 
