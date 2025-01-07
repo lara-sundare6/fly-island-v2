@@ -16,57 +16,48 @@ Fly Island is a web application that integrates with Google Cloud Monitoring to 
 - Google Cloud account with Monitoring API enabled
 - Google Cloud credentials file
 
+## Usage
 
+- Access the application at `http://localhost:5000`
+- The root route (`/`) serves the React frontend
+- The `/ci_cd_status` route provides CI/CD status updates
+- Real-time updates are handled via SocketIO
 
+## Setup
 
-## Deployment Instructions
+1. Clone the repository:
 
-### Docker & Google Cloud
-
-1. Install Docker from [Docker's official website](https://docs.docker.com/get-docker/).
-
-2. Build the Docker image:
     ```sh
-    docker build -t gcr.io/fly-island/my-app .
+    git clone https://github.com/your-username/fly-island.git
+    cd fly-island
     ```
 
-3. Push the Docker container:
+2. Set up the Python environment:
+
     ```sh
-    docker push gcr.io/fly-island/my-app
-    ```
-
-4. Deploy to Google Cloud Run
-    ```
-    gcloud run deploy my-app \
-        --image gcr.io/fly-island/my-app \
-        --platform managed \
-        --region us-central1 \
-        --allow-unauthenticated
-    ```
-    
-### Virtual Environment
-
-1. Activate the virtual environment:
-    - On Unix or MacOS:
-        ```sh
-        source venv/bin/activate
-        ```
-
-2. Install the required packages:
-    ```sh
+    python3 -m venv myenv
+    source myenv/bin/activate
     pip install -r requirements.txt
     ```
 
-### Flask
+3. Set up the React frontend:
 
-1. Set the Flask app environment variable:
     ```sh
-    export FLASK_APP=app.py
+    cd frontend
+    npm install
+    npm run build
+    cd ..
     ```
 
-2. Run the Flask application:
+4. Set the Google Cloud credentials:
+
+    ```sh
+    export GOOGLE_APPLICATION_CREDENTIALS="/path/to/your/credentials.json"
+    ```
+
+5. Run the Flask application:
+
     ```sh
     flask run
-    ```
 
 Feel free to customize these instructions as per your project's requirements. You can update the README.md file directly in the repository with these instructions.
