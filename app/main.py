@@ -12,6 +12,8 @@ import os
 app = Flask(__name__, static_folder='../frontend/public', template_folder='../frontend/public')
 
 # Enable Cross-Origin Resource Sharing (CORS) for the app
+# my frontend (which might be hosted on a different domain or port) needs to communicate with my Flask backend. Without CORS, the browser would block such cross-origin HTTP requests for security reasons.
+
 CORS(app)
 
 # Initialize SocketIO for real-time communication
