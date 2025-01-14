@@ -2,6 +2,10 @@
 
 Fly Island is a web application that integrates with Google Cloud Monitoring to create custom metrics and provides CI/CD status updates. The application is built using Flask, Flask-SocketIO, and React.
 
+## SRE Documentation
+
+Detailed SRE documentation can be found [here](docs/SRE_Documentation.md).
+
 ## Features
 
 - Create custom metrics in Google Cloud Monitoring
