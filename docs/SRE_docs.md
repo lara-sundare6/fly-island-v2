@@ -98,7 +98,7 @@ This document outlines the Service Level Indicators (SLIs), Service Level Object
     2. Run the failing tests locally in the development environment to reproduce the issue.
     3. Debug the code to identify and fix the root cause of the test failures.
     4. If the failures are due to flaky tests, investigate the test environment or test data for inconsistencies.
-* **Escalation:** If the issue cannot be resolved within 1 hour and is blocking releases, escalate to lara-sundare6.
+* **Escalation:** If the issue cannot be resolved within 1 hour and is blocking releases, escalate to lara-sundare6.* **Escalation:** If the issue cannot be resolved within 1 hour and is blocking releases, escalate to lara-sundare6.
 
 ## On-Call and Escalation Procedures
 
