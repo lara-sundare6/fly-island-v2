@@ -4,7 +4,7 @@ Fly Island is a web application that integrates with Google Cloud Monitoring to 
 
 ## SRE Documentation
 
-Detailed SRE documentation can be found [here](docs/SRE_Documentation.md).
+Detailed SRE documentation can be found [here](docs/SRE_docs.md).
 
 ## Features
 
