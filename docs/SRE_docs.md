@@ -1,6 +1,6 @@
 # CI/CD Pipeline SRE Documentation
 
-This document outlines the Service Level Indicators (SLIs), Service Level Objectives (SLOs), and other key SRE practices for our CI/CD pipeline, aligning with Google's SRE principles.
+This document outlines the Service Level Indicators (SLIs), Service Level Objectives (SLOs), and other key SRE practices for our CI/CD pipeline.
 
 ## Service Level Indicators (SLIs)
 
