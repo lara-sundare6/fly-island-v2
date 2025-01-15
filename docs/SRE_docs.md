@@ -1,6 +1,6 @@
 # CI/CD Pipeline SRE Documentation
 
-This document outlines the Service Level Indicators (SLIs), Service Level Objectives (SLOs), and other key SRE practices for our CI/CD pipeline.
+This document outlines the Service Level Indicators (SLIs), Service Level Objectives (SLOs), and other key SRE metrics for a CI/CD pipeline.
 
 ## Service Level Indicators (SLIs)
 
