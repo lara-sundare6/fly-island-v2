@@ -6,7 +6,7 @@ This document outlines the Service Level Indicators (SLIs), Service Level Object
 
 ### Availability
 
-* **Definition:** The proportion of time our CI/CD pipeline is available and functioning as expected.
+* **Definition:** The proportion of time our CI/CD pipeline is available and functioning as expected.`
 * **Metric:** `successful_runs / total_runs`
 * **Implementation:** We track the number of successful pipeline runs and the total number of runs using Google Cloud Monitoring. A successful run is defined as a pipeline execution where all stages complete without errors. Availability is calculated over a rolling 24-hour window.
 * **Monitoring:** We monitor availability across all stages of our pipeline, including build, test, and deploy.  Dashboards are available in Google Cloud Monitoring  **link coming soon*.

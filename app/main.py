@@ -56,6 +56,14 @@ def create_custom_metric(value):
     
     client.create_time_series(name=project_name, time_series=[series])
 
+def get_db_connection():
+    try:
+        conn = psycopg2.connect(os.environ['DATABASE_URI'])
+        return conn
+    except psycopg2.Error as e:
+        print(f"Database connection error: {e}")
+        return None
+
 @app.route('/')
 def index():
     """
@@ -92,6 +100,23 @@ def update_pipeline_status():
     ]
     socketio.emit('pipeline_status_update', data)
     return jsonify({'status': 'success'})
+
+@app.route('/db_test')
+def db_test():
+    conn = get_db_connection()
+    if conn is None:
+        return jsonify({'error': 'Database connection failed'}), 500
+    try:
+        cur = conn.cursor()
+        cur.execute("SELECT version()")
+        db_version = cur.fetchone()[0]
+        cur.close()
+        conn.close()
+        return jsonify({'db_version': db_version})
+    except Exception as e:
+        print(f"Database query error: {e}")
+        return jsonify({'error': 'Database query failed'}), 500
+
 
 @socketio.on('connect')
 def handle_connect():

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import PipelineChart from './components/PipelineChart';
 
-const socket = io('http://localhost:5000'); // Adjust the URL as needed
+const socket = io('http://34.67.156.178:8080'); // Adjust the URL as needed
 
 function App() {
     const [data, setData] = useState({ labels: [], values: [] });
