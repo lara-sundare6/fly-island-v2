@@ -22,7 +22,7 @@ Detailed SRE documentation can be found [here](docs/SRE_docs.md).
 
 ## Usage
 
-- Access the application at `http://localhost:5000`
+- Access the application at `http://localhost:8080`
 - The root route (`/`) serves the React frontend
 - The `/ci_cd_status` route provides CI/CD status updates
 - Real-time updates are handled via SocketIO
