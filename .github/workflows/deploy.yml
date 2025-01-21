@@ -27,18 +27,7 @@ jobs:
           docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/flies:$GITHUB_SHA .
           docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/flies:$GITHUB_SHA
 
-      # - name: Create artifacts directory
-      #   run: mkdir -p ./artifacts
 
-      # - name: Copy artifacts
-      #   run: cp -r ./some/path/to/your/artifacts/* ./artifacts
-
-      # - name: Upload artifacts
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: flies-artifacts-${{ github.sha }}
-      #     path: ./artifacts
-      #     if-no-files-found: error  # Fail if no artifacts are found
       
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v0
@@ -88,6 +77,3 @@ jobs:
           PORT=$(kubectl get service fly-island-app-service -o jsonpath='{.spec.ports[0].port}')
           curl -X POST http://$IP_ADDRESS:$PORT/update_pipeline_status
   
-
-# docker build -t gcr.io/your-project-id/your-app-name:v1 .
-# docker push gcr.io/your-project-id/your-app-name:v1
