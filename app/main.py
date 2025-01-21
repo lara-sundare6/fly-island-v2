@@ -5,6 +5,8 @@ from app.routes.ci_cd import ci_cd_blueprint
 from app.routes.ai import ai_blueprint
 from google.cloud import monitoring_v3
 from google.protobuf.timestamp_pb2 import Timestamp
+from google.cloud import monitoring_v3
+from google.oauth2 import service_account
 import time
 import os
 
@@ -35,8 +37,12 @@ def create_custom_metric(value):
     Args:
         value (float): The value of the custom metric.
     """
-    client = monitoring_v3.MetricServiceClient()
-    project_name = f"projects/{client.project_path('fly-island')}"
+    credentials = service_account.Credentials.from_service_account_file(
+        os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+    )
+    client = monitoring_v3.MetricServiceClient(credentials=credentials)
+    project_id = credentials.project_id
+    project_name = f"projects/{project_id}"
     
     series = monitoring_v3.types.TimeSeries()
     series.metric.type = 'custom.googleapis.com/my_metric'

@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      SERVICE_NAME: fly-island-app-service
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -25,27 +27,67 @@ jobs:
           docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/flies:$GITHUB_SHA .
           docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/flies:$GITHUB_SHA
 
-      - name: Create artifacts directory
-        run: mkdir -p ./artifacts
+      # - name: Create artifacts directory
+      #   run: mkdir -p ./artifacts
 
-      - name: Copy artifacts
-        run: cp -r ./some/path/to/your/artifacts/* ./artifacts
+      # - name: Copy artifacts
+      #   run: cp -r ./some/path/to/your/artifacts/* ./artifacts
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: flies-artifacts-${{ github.sha }}
-          path: ./artifacts
-          if-no-files-found: error  # Fail if no artifacts are found
+      # - name: Upload artifacts
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: flies-artifacts-${{ github.sha }}
+      #     path: ./artifacts
+      #     if-no-files-found: error  # Fail if no artifacts are found
       
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_GH_SECRET }}
+          export_default_credentials: true
+
+      - name: Get credentials for GKE
+        run: |
+          gcloud container clusters get-credentials swarm --zone us-central1-a 
+
+      - name: Generate deployment YAML
+        run: |
+          cat <<EOF > deployment.yaml
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: flies-deployment
+          spec:
+            replicas: 3
+            selector:
+              matchLabels:
+                app: flies
+            template:
+              metadata:
+                labels:
+                  app: flies
+              spec:
+                containers:
+                - name: flies
+                  image: gcr.io/${{ secrets.GCP_PROJECT_ID }}/flies:$GITHUB_SHA
+                  ports:
+                  - containerPort: 80
+          EOF
+
       - name: Deploy to GKE
         run: |
           kubectl apply -f deployment.yaml
+          kubectl apply -f service.yaml 
+
 
       - name: Trigger pipeline status update
         run: |
-          curl -X POST http://$(kubectl get service fly-island-app-service -o jsonpath='{.status.loadBalancer.ingress[0].ip}'):8080/update_pipeline_status
-
+          kubectl wait --for=condition=Ready service/${{ env.SERVICE_NAME }} --timeout=5m
+          IP_ADDRESS=$(kubectl get service ${{ env.SERVICE_NAME }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}')  
+          PORT=$(kubectl get service fly-island-app-service -o jsonpath='{.spec.ports[0].port}')
+          curl -X POST http://$IP_ADDRESS:$PORT/update_pipeline_status
+  
 
 # docker build -t gcr.io/your-project-id/your-app-name:v1 .
 # docker push gcr.io/your-project-id/your-app-name:v1
