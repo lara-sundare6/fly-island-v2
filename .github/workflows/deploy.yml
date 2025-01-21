@@ -22,6 +22,9 @@ jobs:
         with:
           credentials_json: ${{ secrets.GCP_SA_GH_SECRET }} # Use the service account key
 
+      - name: Authenticate to Google Container Registry
+        run: gcloud auth configure-docker --quiet
+
       - name: Build and push Docker image
         run: |
           docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/flies:$GITHUB_SHA .
