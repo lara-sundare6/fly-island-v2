@@ -23,7 +23,10 @@ jobs:
           tar -xzvf google-cloud-sdk.tar.gz
           ./google-cloud-sdk/install.sh -q
           echo "google-cloud-sdk/bin" >> $GITHUB_PATH
-          gcloud components install gke-gcloud-auth-plugin kubectl
+
+          sudo apt-get update
+          sudo apt-get install google-cloud-cli-gke-gcloud-auth-plugin kubectl
+
           rm -rf google-cloud-sdk google-cloud-sdk.tar.gz
       
       - name: Authenticate to Google Cloud
