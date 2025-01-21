@@ -24,10 +24,6 @@ jobs:
           ./google-cloud-sdk/install.sh -q
           ./google-cloud-sdk/bin/gcloud components install gke-gcloud-auth-plugin kubectl
           rm -rf google-cloud-sdk google-cloud-sdk.tar.gz
-
-      - name: Get credentials for GKE
-        run: |
-          gcloud container clusters get-credentials swarm --zone us-central1-a 
                   
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v0
@@ -73,6 +69,11 @@ jobs:
                   ports:
                   - containerPort: 80
           EOF
+
+      - name: Get credentials for GKE
+        run: |
+          gcloud container clusters get-credentials swarm --zone us-central1-a 
+  
 
       - name: Deploy to GKE
         run: |
