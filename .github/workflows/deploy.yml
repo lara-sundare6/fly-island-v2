@@ -22,9 +22,10 @@ jobs:
           curl -LO https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz
           tar -xzvf google-cloud-sdk.tar.gz
           ./google-cloud-sdk/install.sh -q
-          ./google-cloud-sdk/bin/gcloud components install gke-gcloud-auth-plugin kubectl
+          echo "google-cloud-sdk/bin" >> $GITHUB_PATH
+          gcloud components install gke-gcloud-auth-plugin kubectl
           rm -rf google-cloud-sdk google-cloud-sdk.tar.gz
-                  
+      
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v0
         with:
