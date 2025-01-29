@@ -93,4 +93,5 @@ jobs:
           kubectl wait --for=condition=Ready service/${{ env.SERVICE_NAME }} --timeout=5m
           IP_ADDRESS=$(kubectl get service ${{ env.SERVICE_NAME }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}')  
           PORT=$(kubectl get service fly-island-app-service -o jsonpath='{.spec.ports[0].port}')
+          echo "Your Flask app is running at: http://$IP_ADDRESS:$PORT"
           curl -X POST http://$IP_ADDRESS:$PORT/update_pipeline_status
