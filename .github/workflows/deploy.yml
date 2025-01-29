@@ -73,6 +73,16 @@ jobs:
         run: |
           gcloud container clusters get-credentials swarm --zone us-central1-a 
 
+      - name: Check network connectivity to Kubernetes API server
+        run: curl -v https://35.239.218.8:443
+
+      - name: Verify kubectl context
+        run: kubectl config current-context
+
+      - name: Check API server status
+        run: kubectl get pods -n kube-system -l component=kube-apiserver
+
+
       - name: Deploy to GKE
         run: |
           kubectl apply -f deployment.yaml
